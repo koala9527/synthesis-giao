@@ -1,0 +1,30 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  PROJECT_NAME: koala9527/fruit-synthesis
+  REGISTRY_URL: 待会设置远程镜像仓库
+
+
+build:
+  stage: build
+  script:
+    - cp -rf ./  /home/gitlab-runner/fruit-synthesis
+  only:
+    - master
+  tags:
+    - b4master
+
+
+deploy:
+  stage: deploy
+  script:
+    - docker restart  fruit-synthesis
+  only:
+    - master
+  tags:
+    - b4master
+
+
+  #  docker run --name fruit-synthesis  -p 8090:80 -v /home/gitlab-runner/fruit-synthesis:/usr/share/nginx/html/ -d nginx     #首次在develop运行
