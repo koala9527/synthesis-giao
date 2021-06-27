@@ -6,7 +6,6 @@ variables:
   PROJECT_NAME: koala9527/fruit-synthesis
   REGISTRY_URL: 待会设置远程镜像仓库
 
-
 build:
   stage: build
   script:
