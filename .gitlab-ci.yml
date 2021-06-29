@@ -11,6 +11,21 @@ build:
   script:
     - cp -rf ./  /home/gitlab-runner/fruit-synthesis
   only:
+    - develop
+  tags:
+    - b4master
+
+build_master:
+  stage: build
+  script:
+    - cp -rf ./  /home/gitlab-runner/fruit-synthesis
+    - docker build . -t $PROJECT_NAME
+    - docker tag $PROJECT_NAME $REGISTRY_URL/$PROJECT_NAME:latest
+    - docker tag $PROJECT_NAME $REGISTRY_URL/$PROJECT_NAME:backups-$CI_JOB_ID
+    - docker push $REGISTRY_URL/$PROJECT_NAME:latest
+    - docker push $REGISTRY_URL/$PROJECT_NAME:backups-$CI_JOB_ID
+
+  only:
     - master
   tags:
     - b4master
@@ -25,5 +40,19 @@ deploy:
   tags:
     - b4master
 
+deploy_master:
+  stage: deploy
+  script:
+    #拉取最新镜像
+    - docker pull $REGISTRY_URL/$PROJECT_NAME:latest
+    - docker stop fruit-synthesis
+    - docker rm fruit-synthesis
+    - docker run --name fruit-synthesis -p 8090:80  -d $REGISTRY_URL/$PROJECT_NAME:latest
+  only:
+    - master
+  tags:
+    - baiduyun
+ 
+# docker run --name fruit-synthesis -p 8090:80 -d 129.204.105.248:7029/koala/xigua:v1  #master 首选运行
 
   #  docker run --name fruit-synthesis  -p 8090:80 -v /home/gitlab-runner/fruit-synthesis:/usr/share/nginx/html/ -d nginx     #首次在develop运行
