@@ -29,7 +29,7 @@ build_master:
   only:
     - master
   tags:
-    - b4master
+    - baiduyun
 
 #部署
 deploy_develop:
