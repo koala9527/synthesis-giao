@@ -23,8 +23,8 @@ build_master:
     - docker build . -t $PROJECT_NAME
     - docker tag $PROJECT_NAME $REGISTRY_URL/$PROJECT_NAME:latest
     - docker tag $PROJECT_NAME $REGISTRY_URL/$PROJECT_NAME:backups-$CI_JOB_ID
-    - docker push $REGISTRY_URL/$PROJECT_NAME:latest
-    - docker push $REGISTRY_URL/$PROJECT_NAME:backups-$CI_JOB_ID
+    - podman push --format=docker $REGISTRY_URL/$PROJECT_NAME:latest
+    - podman push --format=docker $REGISTRY_URL/$PROJECT_NAME:backups-$CI_JOB_ID
 
   only:
     - master
@@ -45,7 +45,7 @@ deploy_master:
   stage: deploy
   script:
     #拉取最新镜像
-    - docker pull $REGISTRY_URL/$PROJECT_NAME:latest
+    - podman pull $REGISTRY_URL/$PROJECT_NAME:latest
     - docker stop fruit-synthesis
     - docker rm fruit-synthesis
     - docker run --name fruit-synthesis -p 8090:80  -d $REGISTRY_URL/$PROJECT_NAME:latest
