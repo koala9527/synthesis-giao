@@ -4,14 +4,15 @@ stages:
 
 variables:
   PROJECT_NAME: koala9527/fruit-synthesis
-  REGISTRY_URL: 待会设置远程镜像仓库
+  REGISTRY_URL: 129.204.105.248:7029
 
-build:
+build_develop:
   stage: build
   script:
     - cp -rf ./  /home/gitlab-runner/fruit-synthesis
   only:
     - develop
+<<<<<<< HEAD
   tags:
     - b4master
 
@@ -27,16 +28,32 @@ build_master:
 
   only:
     - master
+=======
+>>>>>>> 2e34d923a7036ab334a02df065ff73268ce7b7e8
   tags:
     - b4master
 
+build_master:
+  stage: build
+  script:
+    - docker build . -t $PROJECT_NAME
+    - docker tag $PROJECT_NAME $REGISTRY_URL/$PROJECT_NAME:latest
+    - docker tag $PROJECT_NAME $REGISTRY_URL/$PROJECT_NAME:backups-$CI_JOB_ID
+    - docker push $REGISTRY_URL/$PROJECT_NAME:latest
+    - docker push $REGISTRY_URL/$PROJECT_NAME:backups-$CI_JOB_ID
 
-deploy:
+  only:
+    - master
+  tags:
+    - baiduyun
+
+
+deploy_develop:
   stage: deploy
   script:
     - docker restart  fruit-synthesis
   only:
-    - master
+    - develop
   tags:
     - b4master
 
@@ -55,4 +72,4 @@ deploy_master:
  
 # docker run --name fruit-synthesis -p 8090:80 -d 129.204.105.248:7029/koala/xigua:v1  #master 首选运行
 
-  #  docker run --name fruit-synthesis  -p 8090:80 -v /home/gitlab-runner/fruit-synthesis:/usr/share/nginx/html/ -d nginx     #首次在develop运行
+#  docker run --name fruit-synthesis  -p 8090:80 -v /home/gitlab-runner/fruit-synthesis:/usr/share/nginx/html/ -d nginx     #首次在develop运行
