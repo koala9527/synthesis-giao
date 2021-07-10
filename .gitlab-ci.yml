@@ -4,7 +4,7 @@ stages:
 
 variables:
   PROJECT_NAME: koala9527/fruit-synthesis
-  REGISTRY_URL: 129.204.105.248:7029
+  REGISTRY_URL: ***.***.***.***:7029
 
 #打包
 build_develop:
@@ -54,6 +54,6 @@ deploy_master:
   tags:
     - baiduyun
  
-# docker run --name fruit-synthesis -p 8090:80 -d 129.204.105.248:7029/koala/xigua:v1  #master 首选运行
+# docker run --name fruit-synthesis -p 8090:80 -d ***.***.***.***:7029/koala/xigua:v1  #master 首选运行
 
 #  docker run --name fruit-synthesis  -p 8090:80 -v /home/gitlab-runner/fruit-synthesis:/usr/share/nginx/html/ -d nginx     #首次在develop运行
