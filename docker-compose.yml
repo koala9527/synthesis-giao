@@ -1,0 +1,11 @@
+version: "3"
+services:
+  synthesis-giao:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: synthesis-giao
+    image: synthesis-giao
+    ports:
+      - "9085:80"
+    restart: always
